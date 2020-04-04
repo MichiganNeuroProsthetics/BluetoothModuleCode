@@ -1,0 +1,43 @@
+import processing.serial.*;
+Serial myPort;
+String ledStatus = "LED: OFF";
+
+void setup(){
+  size(450, 500);
+  myPort = new Serial(this, "COM5", 38400);
+  myPort.bufferUntil('\n');
+}
+
+void serial(Serial myPort){
+  ledStatus = myPort.readStringUntil("\n");
+}
+
+void program(){
+  bakcground(237, 240, 241);
+  stroke(33);
+  strokeWeight(1);
+  rect(50, 100, 150, 50, 10);
+  rect(250, 100, 150, 60, 10);
+  fill(255);
+  
+  textSize(32);
+  text("Turn ON", 60, 135);
+  text("Turn OFF", 255, 135);
+  textSize(24);
+  fill(33)
+  text("Status:", 180, 200);
+  text(30);
+  
+  text(ledStatus, 155, 240);
+ 
+  // If Turn ON is pressed
+  if(mousePressed && mouseX>50 && mouseX<200 && mouseY>100 && mouseY<150){
+    myPort.write('1');
+  }
+
+  // If Turn OFF is pressed
+  if(mousePressed && mouseX>250 && mouseX<400 && mouseY>100 && mouseY<150){
+    myPort.write('0');
+  }
+  
+}
